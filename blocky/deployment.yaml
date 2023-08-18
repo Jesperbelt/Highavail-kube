@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blocky
+  labels:
+    app: blocky
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: blocky
+  template:
+    metadata:
+      labels:
+        app: blocky
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: blocky
+        image: spx01/blocky:main
+        ports:
+        - containerPort: 53
+          protocol: UDP
+          name: blocky-dns-udp
+        - containerPort: 53
+          protocol: TCP
+          name: blocky-dns-tcp
+        - containerPort: 4000
+          protocol: TCP
+          name: blocky-web
+        env:
+        - name: TZ
+          value: "Europe/Amsterdam"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        volumeMounts:
+        - name: blocky-config
+          mountPath: /app/config.yml
+      tolerations:
+      - key: node.kubernetes.io/not-ready
+        effect: NoExecute
+        tolerationSeconds: 0
+      - key: node.kubernetes.io/unreachable
+        effect: NoExecute
+        tolerationSeconds: 0
+      volumes:
+      - name: blocky-config
+        persistentVolumeClaim:
+          claimName: blocky-pvc
