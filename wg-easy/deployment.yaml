@@ -46,7 +46,7 @@ spec:
         - name: WG_HOST
           value: "diplomacyofwar.com"
         - name: PASSWORD
-          value: "TGZXb0gzbTZxS2g0MlM="
+          value: "1234"
         - name: WG_DEFAULT_DNS
           value: "10.1.10.201"
         - name: "WG_ALLOWED_IPS"

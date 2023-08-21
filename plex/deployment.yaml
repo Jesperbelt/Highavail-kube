@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex
+  labels:
+    app: plex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      runtimeClassName: nvidia
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+      restartPolicy: Always
+      containers:
+      - name: plex
+        image: ghcr.io/onedr0p/plex:1.32.5.7349-8f4248874
+        ports:
+        - containerPort: 32400
+          protocol: TCP
+          name: plex-http
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+            nvidia.com/gpu: 1
+        env:
+        - name: TZ
+          value: "Europe/Amsterdam"
+        volumeMounts:
+        - name: plex-config
+          mountPath: /config
+        - name: plex-data
+          mountPath: /media
+      tolerations:
+      - key: node.kubernetes.io/not-ready
+        effect: NoExecute
+        tolerationSeconds: 0
+      - key: node.kubernetes.io/unreachable
+        effect: NoExecute
+        tolerationSeconds: 0
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      volumes:
+      - name: plex-config
+        persistentVolumeClaim:
+          claimName: plex-config-pvc
+      - name: plex-data
+        nfs:
+          server: 10.1.10.100
+          path: /mnt/Andromeda/plex-data
+          readOnly: true

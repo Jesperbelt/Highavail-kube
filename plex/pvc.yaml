@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: plex-config-pvc
+spec:
+  storageClassName: kadalu.ext-config
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi

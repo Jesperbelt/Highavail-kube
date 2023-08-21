@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyfin-service
+  labels:
+    app: jellyfin
+spec:
+  selector:
+    app: jellyfin
+  ports:
+  - name: jellyfin-http
+    protocol: UDP
+    port: 8096
+    targetPort: 8096
+    nodePort: 30003
+  - name: jellyfin-https
+    protocol: TCP
+    port: 8920
+    targetPort: 8920
+    nodePort: 30004
+  type: NodePort
