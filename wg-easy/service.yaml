@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wg-easy-service
-  labels:
-    app: wg-easy
+  name: wg-easy-vpn
+  namespace: wg-easy
 spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.1.10.5
   selector:
     app: wg-easy
   ports:
@@ -12,10 +13,21 @@ spec:
     protocol: UDP
     port: 51820
     targetPort: 51820
-    nodePort: 30001
+  selector:
+    app: wg-easy
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wg-easy
+  namespace: wg-easy
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.1.10.4
+  ports:
   - name: wg-easy-web
     protocol: TCP
     port: 51821
     targetPort: 51821
-    nodePort: 30002
-  type: NodePort
+  selector:
+    app: wg-easy

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wg-easy
+  namespace: wg-easy
   labels:
     app: wg-easy
 spec:
@@ -46,7 +47,10 @@ spec:
         - name: WG_HOST
           value: "diplomacyofwar.com"
         - name: PASSWORD
-          value: "1234"
+          valueFrom:
+            secretKeyRef:
+              name: wg-easy-pass
+              key: password
         - name: WG_DEFAULT_DNS
           value: "10.1.10.201"
         - name: "WG_ALLOWED_IPS"
@@ -59,7 +63,7 @@ spec:
             memory: "2Gi"
             cpu: "2000m"
         volumeMounts:
-        - name: wg-easy-data
+        - name: wg-easy-config
           mountPath: /etc/wireguard
       tolerations:
       - key: node.kubernetes.io/not-ready
@@ -69,6 +73,6 @@ spec:
         effect: NoExecute
         tolerationSeconds: 0
       volumes:
-      - name: wg-easy-data
+      - name: wg-easy-config
         persistentVolumeClaim:
-          claimName: wg-easy-pvc
+          claimName: wg-easy-config

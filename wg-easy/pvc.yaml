@@ -1,7 +1,8 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: wg-easy-pvc
+  name: wg-easy-config
+  namespace: wg-easy
 spec:
   storageClassName: kadalu.ext-config
   accessModes:

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: plex
+  namespace: plex
   labels:
     app: plex
 spec:
@@ -56,7 +57,7 @@ spec:
       volumes:
       - name: plex-config
         persistentVolumeClaim:
-          claimName: plex-config-pvc
+          claimName: plex-config
       - name: plex-data
         nfs:
           server: 10.1.10.100

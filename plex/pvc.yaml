@@ -1,7 +1,8 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: plex-config-pvc
+  name: plex-config
+  namespace: plex
 spec:
   storageClassName: kadalu.ext-config
   accessModes:

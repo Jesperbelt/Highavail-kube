@@ -1,16 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: plex-service
-  labels:
-    app: plex
+  name: plex
+  namespace: plex
 spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.1.10.6
   selector:
     app: plex
   ports:
   - name: plex-http
     protocol: TCP
-    port: 8096
-    targetPort: 8096
-    nodePort: 30005
-  type: NodePort
+    port: 32400
+    targetPort: 32400
+  selector:
+    app: plex
