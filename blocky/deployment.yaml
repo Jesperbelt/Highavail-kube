@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: blocky
+  namespace: blocky
   labels:
     app: blocky
 spec:
@@ -44,10 +45,10 @@ spec:
       tolerations:
       - key: node.kubernetes.io/not-ready
         effect: NoExecute
-        tolerationSeconds: 0
+        tolerationSeconds: 30
       - key: node.kubernetes.io/unreachable
         effect: NoExecute
-        tolerationSeconds: 0
+        tolerationSeconds: 30
       volumes:
       - name: blocky-config
         persistentVolumeClaim:

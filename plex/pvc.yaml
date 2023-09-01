@@ -4,9 +4,9 @@ metadata:
   name: plex-config
   namespace: plex
 spec:
-  storageClassName: kadalu.ext-config
+  storageClassName: kadalu.external
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi
+      storage: 100Gi

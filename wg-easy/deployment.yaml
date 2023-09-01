@@ -68,10 +68,10 @@ spec:
       tolerations:
       - key: node.kubernetes.io/not-ready
         effect: NoExecute
-        tolerationSeconds: 0
+        tolerationSeconds: 30
       - key: node.kubernetes.io/unreachable
         effect: NoExecute
-        tolerationSeconds: 0
+        tolerationSeconds: 30
       volumes:
       - name: wg-easy-config
         persistentVolumeClaim:

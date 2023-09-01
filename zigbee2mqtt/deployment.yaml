@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zigbee2mqtt
+  namespace: zigbee2mqtt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zigbee2mqtt
+  template:
+    metadata:
+      labels:
+        app: zigbee2mqtt
+    spec:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+      containers:
+        - name: zigbee2mqtt
+          image: koenkk/zigbee2mqtt:latest
+          ports:
+            - containerPort: 10103
+              protocol: TCP
+              name: http
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+      tolerations:
+      - key: node.kubernetes.io/not-ready
+        effect: NoExecute
+        tolerationSeconds: 30
+      - key: node.kubernetes.io/unreachable
+        effect: NoExecute
+        tolerationSeconds: 30
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: zigbee2mqtt-data

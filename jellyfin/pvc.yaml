@@ -4,9 +4,9 @@ metadata:
   name: jellyfin-config
   namespace: jellyfin
 spec:
-  storageClassName: kadalu.ext-config
+  storageClassName: kadalu.external
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi
+      storage: 100Gi

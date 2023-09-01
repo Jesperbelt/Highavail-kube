@@ -33,12 +33,22 @@ spec:
             memory: "128Mi"
             cpu: "200m"
           limits:
-            memory: "2Gi"
-            cpu: "2000m"
+            memory: "8Gi"
+            cpu: "8000m"
             nvidia.com/gpu: 1
         env:
         - name: TZ
           value: "Europe/Amsterdam"
+        - name: PLEX_CLAIM
+          valueFrom:
+            secretKeyRef:
+              name: plex-pass
+              key: claim
+        - name: ADVERTISE_IP
+          valueFrom:
+            secretKeyRef:
+              name: plex-ip
+              key: ip
         volumeMounts:
         - name: plex-config
           mountPath: /config
@@ -47,10 +57,10 @@ spec:
       tolerations:
       - key: node.kubernetes.io/not-ready
         effect: NoExecute
-        tolerationSeconds: 0
+        tolerationSeconds: 30
       - key: node.kubernetes.io/unreachable
         effect: NoExecute
-        tolerationSeconds: 0
+        tolerationSeconds: 30
       - key: nvidia.com/gpu
         operator: Exists
         effect: NoSchedule
@@ -60,6 +70,6 @@ spec:
           claimName: plex-config
       - name: plex-data
         nfs:
-          server: 10.1.10.100
-          path: /mnt/Andromeda/plex-data
+          server: 10.1.10.101
+          path: /Sagittarius/plex
           readOnly: true

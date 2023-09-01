@@ -1,12 +1,12 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: blocky-pvc
-  namespace: blocky
+  name: mosquitto-configinc
+  namespace: mosquitto
 spec:
   storageClassName: kadalu.external
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi
+      storage: 16Gi

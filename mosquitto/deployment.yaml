@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: mosquitto
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mosquitto
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+      containers:
+      - name: mosquitto
+        image: eclipse-mosquitto:latest
+        ports:
+        - containerPort: 1883
+          protocol: TCP
+          name: http
+        volumeMounts:
+        - name: data
+          mountPath: /mosquitto/data
+        - name: configinc
+          mountPath: /mosquitto/configinc
+        - name: mosquitto-config
+          mountPath: /mosquitto/config/mosquitto.conf
+          subPath: mosquitto.conf
+      tolerations:
+      - key: node.kubernetes.io/not-ready
+        effect: NoExecute
+        tolerationSeconds: 30
+      - key: node.kubernetes.io/unreachable
+        effect: NoExecute
+        tolerationSeconds: 30
+      volumes:
+      - name: configinc
+        persistentVolumeClaim:
+          claimName: mosquitto-configinc
+      - name: data
+        persistentVolumeClaim:
+          claimName: mosquitto-data
+      - configMap:
+          defaultMode: 420
+          name: mosquitto-config
+          optional: false
+        name: mosquitto-config   

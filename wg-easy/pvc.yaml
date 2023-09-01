@@ -4,7 +4,7 @@ metadata:
   name: wg-easy-config
   namespace: wg-easy
 spec:
-  storageClassName: kadalu.ext-config
+  storageClassName: kadalu.external
   accessModes:
     - ReadWriteMany
   resources:
